@@ -8,8 +8,6 @@ import RoseBouquet from '../assets/Rose_Bouquet.jpg';
 import Bloomy from '../assets/Bloomy.jpg';
 
 
-
-
 export const DaftarProduk = [
     {id: 1, nama: "Classic Roses ", harga: 200000, image: ClassicRoses, kategori: "Buket"},
     {id: 2, nama: "Peach Blush", harga: 190000, image: PeachBlush, kategori: "flower"},
