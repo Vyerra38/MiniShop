@@ -5,7 +5,7 @@ import SerenadePetals from '../assets/Serenade_Petals.jpg';
 import SunFlowers from '../assets/Sun-Flowers.jpg';
 import RebornRose from '../assets/Reborn_Rose.jpg';
 import RoseBouquet from '../assets/Rose_Bouquet.jpg';
-import bloomy from '../assets/Bloomy.jpg';
+import Bloomy from '../assets/Bloomy.jpg';
 
 
 
@@ -18,7 +18,7 @@ export const DaftarProduk = [
     {id: 5, nama: "Sun Flowers", harga: 120000, image: SunFlowers, kategori: "flower"},
     {id: 6, nama: "Reborn Rose", harga: 90000, image: RebornRose, kategori: "flower"},
     {id: 7, nama: "Rose Bouquet ", harga: 250000, image: RoseBouquet, kategori: "Buket"},
-    {id: 8, nama: "Bloomy", harga: 85000, image:bloomy, kategori: "Buket",}
+    {id: 8, nama: "Bloomy", harga: 85000, image: Bloomy, kategori: "Buket",}
 ];
 
 export default DaftarProduk;
