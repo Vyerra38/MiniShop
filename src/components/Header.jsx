@@ -13,7 +13,8 @@ function Header() {
             padding: '20px 40px', 
             backgroundColor: '#d3fcd4e4',
             width: '100%',
-            boxSizing: 'border-box'
+            boxSizing: 'border-box',
+            flexWrap: 'wrap',
         }}>
             <h2 style={{ color: '#555', margin: 0, fontSize: '20px' }}>MINISHOP</h2>
             
