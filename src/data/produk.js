@@ -2,7 +2,7 @@ import ClassicRoses from '../assets/ClassicRoses.jpg';
 import PeachBlush from '../assets/Peach_Blush.jpg';
 import MixFlowers from '../assets/MixFlowers.jpg';
 import SerenadePetals from '../assets/Serenade_Petals.jpg';
-import SunFlowers from '../assets/Sun-Flowers.jpg';
+import SunFlowers from '../assets/SunFlowers.jpg';
 import RebornRose from '../assets/Reborn_Rose.jpg';
 import RoseBouquet from '../assets/Rose_Bouquet.jpg';
 import Bloomy from '../assets/Bloomy.jpg';
