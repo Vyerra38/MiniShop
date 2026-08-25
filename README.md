@@ -1,16 +1,25 @@
-# React + Vite
+# MiniShop - Aplikasi Toko Online
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+MiniShop adalah aplikasi e-commerce berbasis web yang dikembangkan menggunakan React (Vite) untuk memenuhi Tugas Akhir Semester.
 
-Currently, two official plugins are available:
+## Fitur Utama
+- Katalog produk bunga dan buket interaktif
+- Halaman Keranjang Belanja & Detail Produk
+- Desain responsif untuk perangkat mobile dan desktop
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Cara Instalasi & Menjalankan Proyek
+1. Clone repository ini: `git clone <https://github.com/Vyerra38/MiniShop.git>`
+2. Masuk ke folder proyek: `cd minishop`
+3. Install dependencies: `npm install`
+4. Jalankan mode development: `npm run dev`
 
-## React Compiler
+## Struktur Folder Proyek
+- src/assets/ : Menyimpan aset gambar produk
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- src/components/ : Komponen reusable (Header, Footer, Layout, dll)
 
-## Expanding the Oxlint configuration
+- src/context/ : Pengelola state global (AuthContext, Keranjang)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+- src/data/ : Data statis produk (produk.js)
+
+- src/pages/ : Halaman utama aplikasi (Home, Keranjang, DetailProduk, Login, Register, RiwayatPesanan)
