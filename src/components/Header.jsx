@@ -2,49 +2,26 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
 function Header() {
-    const { user, logout } = useAuth();
-    const navigate = useNavigate();
+  return (
+    <header className="bg-green-200 p-4 shadow-md">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        
+        {/* Logo / Judul */}
+        <div className="text-xl font-bold text-gray-800">
+          MINISHOP
+        </div>
 
-    return(
-        <header style={{ 
-            display: 'flex', 
-            justifyContent: 'space-between', 
-            alignItems: 'center', 
-            padding: '20px 40px', 
-            backgroundColor: '#d3fcd4e4',
-            width: '100%',
-            boxSizing: 'border-box',
-            flexWrap: 'wrap',
-        }}>
-            <h2 style={{ color: '#555', margin: 0, fontSize: '20px' }}>MINISHOP</h2>
-            
-            {/* Menggunakan display flex dan margin-left untuk memberi jarak */}
-            <div style={{ display: 'flex',alignItems: 'center', gap: '30px' }}>
-                <Link to="/" style={{ textDecoration: 'none', color: '#333', fontWeight: 'bold', fontSize: '16px' }}>Beranda</Link>
-                <Link to="/keranjang" style={{ textDecoration: 'none', color: '#333', fontWeight: 'bold', fontSize: '16px' }}>Keranjang</Link>
-                <Link to="/riwayat" style={{ textDecoration: 'none', color: '#333', fontWeight: 'bold', fontSize: '16px' }}>Riwayat Pesanan</Link>
+        {/* Menu Navigasi menggunakan Link */}
+        <nav className="flex flex-wrap items-center gap-3 sm:gap-4 text-sm sm:text-base">
+          <Link to="/" className="hover:underline">Beranda</Link>
+          <Link to="/keranjang" className="hover:underline">Keranjang</Link>
+          <Link to="/riwayat" className="hover:underline">Riwayat Pesanan</Link>
+          <Link to="/login" className="hover:underline font-medium">Login</Link>
+        </nav>
 
-                {user ? (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                        <span style={{ color: '#555', fontSize: '16px' }}>Halo, {user.email}</span>
-                        <button
-                            onClick={() => {
-                                logout();
-                                navigate("/login");
-                            }}
-                            style={{ color: '#dc2626', border: 'none', padding: '8px 16px', borderRadius: '4px', cursor: 'pointer' }}
-                        >
-                            Logout
-                        </button>
-                    </div>
-                ) : (
-                    <Link to="/login" style={{ textDecoration: 'none', color: '#333', fontWeight: 'bold', fontSize: '16px' }}>
-                        Login
-                    </Link>
-                )}
-            </div>
-        </header>
-    );
+      </div>
+    </header>
+  );
 }
 
 export default Header;
