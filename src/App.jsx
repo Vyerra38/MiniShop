@@ -4,7 +4,7 @@ import { AuthProvider } from './context/AuthContext.jsx';
 import Layout from './components/Layout.jsx';
 
 // Menggunakan Lazy Loading untuk halaman-halaman
-const Home = lazy(() => import('./pages/home.jsx'));
+const Home = lazy(() => import('./pages/Home.jsx'));
 const DetailProduk = lazy(() => import('./pages/DetailProduk.jsx'));
 const Keranjang = lazy(() => import('./pages/Keranjang.jsx'));
 const Register = lazy(() => import('./pages/Register.jsx'));

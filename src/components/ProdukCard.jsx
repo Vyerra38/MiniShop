@@ -25,9 +25,6 @@ function ProdukCard({ id, nama, harga, image }) {
 
   return (
     <div className="produk-card" style={{ border: '1px solid #ccc', padding: '10px', margin: '10px', width: '200px' , borderRadius: '10px', textAlign: 'center', backgroundColor: '#f9f8f8ea'}}>
-      <div style={{ textAlign:'left', marginBottom: '10px' }}>
-        <Badge text="Baru" backgroundColor="skyblue"/>
-      </div>
       
       {/* gabungan gambar dan judul dengan Link ke halaman detail */}
       <Link to={`/produk/${id}`} style={{ textDecoration: 'none', color: 'inherit' }}>

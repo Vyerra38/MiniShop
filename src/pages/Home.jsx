@@ -89,34 +89,22 @@ function Home() {
         <p className="text-gray-600 mt-1">Silakan pilih produk favoritmu di bawah ini.</p>
 
         {/* Input Pencarian */}
-        <div className="mt-4">
+        <div className="flex flex-col sm:flex-row gap-3 w-full max-w-xl mx-auto mb-6 px-4">
           <input
             type="text"
             placeholder="Cari produk..."
+            className="w-full sm:flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 bg-white"
             value={kataKunci}
             onChange={(e) => {
               setKataKunci(e.target.value); 
               setHalamanAktif(1);
             }} // Reset halaman ke 1 saat kata kunci berubah
-            style={{
-              padding: "8px 16px",
-              width: "300px",
-              borderRadius: "8px",
-              border: "1px solid #ccc",
-              outline: "none",
-            }}
           />
           {/* Dropdown Filter Kategori (Tugas Mingguan) */}
-          <select
+          <select className="w-full sm:w-48 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 bg-white"
             value={kategoriPilihan}
             onChange={(e) => setKategoriPilihan(e.target.value)}
-            style={{
-              padding: "8px 16px",
-              borderRadius: "8px",
-              border: "1px solid #ccc",
-              outline: "none",
-              backgroundColor: "#fff",
-            }}
+          
           >
             <option value="Semua">Semua Kategori</option>
             <option value="Buket">Fresh Flowers</option>
