@@ -1,44 +1,54 @@
-import { createContext, useContext, useState } from "react";
-import { useLocalStorage } from "../hooks/useLocalStorage";
+import { createContext, useContext, useState, useEffect } from "react";
 
 const KeranjangContext = createContext();
 
 export function KeranjangProvider({ children }) {
-  const [item, setItem] = useLocalStorage("keranjang_belanja", []);
+  // Menggunakan localStorage agar data keranjang persis seperti modul tugas
+  const [keranjang, setKeranjang] = useState(() => {
+    const dataSimpanan = localStorage.getItem("keranjang");
+    return dataSimpanan ? JSON.parse(dataSimpanan) : [];
+  });
 
-  function tambahKeKeranjang(produk) {
-    setItem((prevItem) => {
-      // Cek produk sudah ada di keranjang sebelumnya
-      const ada = prevItem.find((p) => p.id === produk.id);
-      
+  useEffect(() => {
+    localStorage.setItem("keranjang", JSON.stringify(keranjang));
+  }, [keranjang]);
+
+  // Fungsi Tambah ke Keranjang
+  const tambahKeKeranjang = (produkBaru) => {
+    setKeranjang((prevKeranjang) => {
+      const ada = prevKeranjang.find((item) => item.id === produkBaru.id);
       if (ada) {
-        // tambah quantity-nya
-        return prevItem.map((p) => 
-          p.id === produk.id ? { ...p, quantity: p.quantity + 1 } : p
+        return prevKeranjang.map((item) =>
+          item.id === produkBaru.id ? { ...item, quantity: (item.quantity || 1) + 1 } : item
         );
-      } else {
-        // Jika belum ada, masukkan produk baru dengan quantity 1
-        return [...prevItem, { ...produk, quantity: 1 }];
       }
+      return [...prevKeranjang, { ...produkBaru, quantity: 1 }];
     });
-  }
+  };
 
-  function hapusDariKeranjang(id) {
-    setItem((prev) => prev.filter((p) => p.id !== id));
-  }
-
-  function ubahJumlah(id, jumlahBaru) {
-    if (jumlahBaru <= 0) {
-      hapusDariKeranjang(id);
-      return;
-    }
-    setItem((prev) =>
-      prev.map((p) => (p.id === id ? { ...p, quantity: jumlahBaru } : p))
+  // 1. FUNGSI UBAH JUMLAH (+ / -)
+  const ubahJumlah = (id, jumlahBaru) => {
+    setKeranjang((prevKeranjang) =>
+      prevKeranjang
+        .map((item) => {
+          if (item.id === id) {
+            return { ...item, quantity: jumlahBaru };
+          }
+          return item;
+        })
+        .filter((item) => item.quantity > 0) // Otomatis hapus jika jumlah 0
     );
-  }
+  };
+
+  // 2. FUNGSI HAPUS DARI KERANJANG
+  const hapusDariKeranjang = (id) => {
+    setKeranjang((prevKeranjang) => prevKeranjang.filter((item) => item.id !== id));
+  };
 
   return (
-    <KeranjangContext.Provider value={{ item, tambahKeKeranjang, hapusDariKeranjang, ubahJumlah }}>
+    <KeranjangContext.Provider
+      value={{ keranjang, tambahKeKeranjang, ubahJumlah, hapusDariKeranjang }}
+    >
       {children}
     </KeranjangContext.Provider>
   );

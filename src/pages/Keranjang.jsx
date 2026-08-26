@@ -4,13 +4,13 @@ import { useKeranjang } from "../context/KeranjangContext";
 import { useAuth } from "../context/AuthContext";
 
 function Keranjang() {
-  const { item, hapusDariKeranjang, ubahJumlah, kosongkanKeranjang } = useKeranjang(); 
+  const { keranjang = [], hapusDariKeranjang, ubahJumlah, kosongkanKeranjang } = useKeranjang(); 
   const { user } = useAuth();
   const navigate = useNavigate();
 
   const [metodePembayaran, setMetodePembayaran] = useState("Transfer Bank");
 
-  const total = item.reduce((sum, p) => sum + (p.harga * p.quantity), 0);
+  const total = keranjang.reduce((sum, p) => sum + (p.harga * (p.quantity || 1)), 0);
 
   const handleCheckout = () => {
     if (!user) {
@@ -19,7 +19,7 @@ function Keranjang() {
       return;
     }
 
-    if (item.length === 0) {
+    if (keranjang.length === 0) {
       alert("Keranjang masih kosong!");
       return;
     }
@@ -28,7 +28,7 @@ function Keranjang() {
       id: Date.now(),
       date: new Date().toLocaleDateString("id-ID"),
       user: user.email, 
-      items: item,
+      items: keranjang,
       total: total,
       metodePembayaran: metodePembayaran,
     };
@@ -40,7 +40,7 @@ function Keranjang() {
     if (typeof kosongkanKeranjang === "function") {
       kosongkanKeranjang();
     } else {
-      item.forEach(produk => hapusDariKeranjang(produk.id));
+      keranjang.forEach(produk => hapusDariKeranjang(produk.id));
     }
 
     alert(`Checkout berhasil via ${metodePembayaran}! Pesanan Anda telah dicatat.`);
@@ -51,7 +51,7 @@ function Keranjang() {
     <div style={{ padding: '40px 20px', maxWidth: '850px', margin: '0 auto', fontFamily: 'sans-serif' }}>
       <h2 style={{ marginBottom: '25px', color: '#333', textAlign: 'center' }}>Keranjang Belanja Kamu</h2>
       
-      {item.length === 0 ? (
+      {keranjang.length === 0 ? (
         <div style={{ background: '#fff', padding: '40px', borderRadius: '12px', textAlign: 'center', border: '1px solid #e5e7eb', boxShadow: '0 4px 6px rgba(0,0,0,0.02)' }}>
           <p style={{ fontWeight: 'bold', color: '#666', marginBottom: '15px', fontSize: '16px' }}>Keranjang kamu masih kosong.</p>
           <button 
@@ -64,9 +64,9 @@ function Keranjang() {
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
           
-          {/* Daftar Produk di Keranjang (Dibuat Full Lebar & Simetris) */}
+          {/* Daftar Produk di Keranjang */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
-            {item.map((produk) => (
+            {keranjang.map((produk) => (
               <div key={produk.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: '1px solid #e5e7eb', padding: '15px 20px', borderRadius: '12px', backgroundColor: '#fff', boxShadow: '0 2px 4px rgba(0,0,0,0.02)' }}>
                 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
@@ -79,9 +79,9 @@ function Keranjang() {
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                   <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #d1d5db', borderRadius: '6px', overflow: 'hidden', backgroundColor: '#f9fafb' }}>
-                    <button onClick={() => ubahJumlah(produk.id, produk.quantity - 1)} style={{ padding: '6px 12px', background: '#e5e7eb', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}>-</button>
-                    <span style={{ padding: '0 15px', fontWeight: 'bold' }}>{produk.quantity}</span>
-                    <button onClick={() => ubahJumlah(produk.id, produk.quantity + 1)} style={{ padding: '6px 12px', background: '#e5e7eb', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}>+</button>
+                    <button onClick={() => ubahJumlah(produk.id, (produk.quantity || 1) - 1)} style={{ padding: '6px 12px', background: '#e5e7eb', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}>-</button>
+                    <span style={{ padding: '0 15px', fontWeight: 'bold' }}>{produk.quantity || 1}</span>
+                    <button onClick={() => ubahJumlah(produk.id, (produk.quantity || 1) + 1)} style={{ padding: '6px 12px', background: '#e5e7eb', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}>+</button>
                   </div>
                   <button onClick={() => hapusDariKeranjang(produk.id)} style={{ padding: '8px 12px', backgroundColor: '#fee2e2', color: '#991b1b', border: 'none', borderRadius: '6px', cursor: 'pointer', fontSize: '14px', fontWeight: 'bold' }}>Hapus</button>
                 </div>
@@ -90,7 +90,7 @@ function Keranjang() {
             ))}
           </div>
 
-          {/* Kotak Ringkasan & Pembayaran (Di Tengah & Lebar) */}
+          {/* Kotak Ringkasan & Pembayaran */}
           <div style={{ background: '#fff', padding: '25px', borderRadius: '12px', border: '1px solid #e5e7eb', boxShadow: '0 4px 6px rgba(0,0,0,0.02)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px', borderBottom: '1px solid #f3f4f6', paddingBottom: '15px' }}>
               <span style={{ fontSize: '18px', color: '#4b5563', fontWeight: '500' }}>Total Belanja:</span>

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import ProdukCard from "../components/ProdukCard";
-import { DaftarProduk } from "../data/produk"; 
 
 function Home() {
   const [produk, setProduk] = useState([]);
@@ -11,22 +10,17 @@ function Home() {
   const [kategoriPilihan, setKategoriPilihan] = useState("Semua");
 
   const [halamanAktif, setHalamanAktif] = useState(1);
-  const produkPerHalaman = 4; // Jumlah produk per halaman
+  const produkPerHalaman = 8; // Jumlah produk per halaman
 
   useEffect(() => {
-    // Simulasi fetch data lokal menggunakan Promise & setTimeout (seolah-olah dari server)
-    const ambilDataLokal = new Promise((resolve, reject) => {
-      setTimeout(() => {
-        // Simulasi kondisi berhasil atau gagal (misal kita anggap selalu sukses)
-        if (DaftarProduk) {
-          resolve(DaftarProduk);
-        } else {
-          reject(new Error("Gagal memuat data produk lokal"));
+    // Mengambil data langsung dari API Publik (Fake Store API)
+    fetch("https://fakestoreapi.com/products")
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Gagal mengambil data dari server");
         }
-      }, 1000); // Jeda waktu 1 detik untuk simulasi loading
-    });
-
-    ambilDataLokal
+        return res.json();
+      })
       .then((data) => {
         setProduk(data);
         setLoading(false);
@@ -37,11 +31,11 @@ function Home() {
       });
   }, []);
 
-  // Tampilan saat data sedang dimuat (memenuhi syarat modul Minggu 10)
+  // Tampilan saat data sedang dimuat
   if (loading) {
     return (
       <div className="text-center py-12">
-        <p className="text-lg text-gray-600">Memuat produk toko...</p>
+        <p className="text-lg text-gray-600">Memuat produk...</p>
       </div>
     );
   }
@@ -55,10 +49,10 @@ function Home() {
     );
   }
 
-  // Logika pencarian : Berdasarkan Kata Kunci DAN Kategori
+  // Logika pencarian & filter kategori
   const produkTersaring = produk.filter((item) => {
-    const cocokNama = item.nama.toLowerCase().includes(kataKunci.toLowerCase());
-    const cocokKategori = kategoriPilihan === "Semua" || item.kategori === kategoriPilihan;
+    const cocokNama = item.title.toLowerCase().includes(kataKunci.toLowerCase());
+    const cocokKategori = kategoriPilihan === "Semua" || item.category === kategoriPilihan;
     return cocokNama && cocokKategori;
   });
 
@@ -72,13 +66,13 @@ function Home() {
   const keHalamanBerikutnya = () => {
     if (halamanAktif < totalHalaman) {
       setHalamanAktif(halamanAktif + 1);
-    };
+    }
   };
 
   const keHalamanSebelumnya = () => {
     if (halamanAktif > 1) {
       setHalamanAktif(halamanAktif - 1);
-    };
+    }
   };
 
   return (
@@ -93,27 +87,32 @@ function Home() {
           <input
             type="text"
             placeholder="Cari produk..."
-            className="w-full sm:flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 bg-white"
+            className="w-full sm:flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-300 bg-white"
             value={kataKunci}
             onChange={(e) => {
               setKataKunci(e.target.value); 
               setHalamanAktif(1);
-            }} // Reset halaman ke 1 saat kata kunci berubah
+            }}
           />
-          {/* Dropdown Filter Kategori (Tugas Mingguan) */}
-          <select className="w-full sm:w-48 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-pink-400 bg-white"
+          {/* Dropdown Filter Kategori (Disesuaikan dengan kategori Fake Store API) */}
+          <select 
+            className="w-full sm:w-48 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-300 bg-white"
             value={kategoriPilihan}
-            onChange={(e) => setKategoriPilihan(e.target.value)}
-          
+            onChange={(e) => {
+              setKategoriPilihan(e.target.value);
+              setHalamanAktif(1);
+            }}
           >
             <option value="Semua">Semua Kategori</option>
-            <option value="Buket">Fresh Flowers</option>
-            <option value="flower">Artificial Flowers</option>
+            <option value="electronics">Electronics</option>
+            <option value="jewelery">Jewelery</option>
+            <option value="men's clothing">Men's Clothing</option>
+            <option value="women's clothing">Women's Clothing</option>
           </select>
         </div>
       </div>
 
-      {/* Menampilkan daftar produk dari data lokal yang disimulasikan */}
+      {/* Menampilkan daftar produk dari API */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-items-center">
         {produkTersaring.length === 0 ? (
           <p className="text-gray-500 col-span-full">Produk tidak ditemukan.</p>
@@ -122,34 +121,36 @@ function Home() {
             <ProdukCard
               key={item.id}
               id={item.id}
-              nama={item.nama}
-              harga={item.harga}
-              image={item.image}
+              nama={item.title}      
+              harga={Math.round(item.price * 15500)} // Dikonversi ke Rupiah dan dibulatkan
+              image={item.image}     
             />
           ))
         )}
       </div>
+
+      {/* Tombol Pagination */}
       {totalHalaman > 1 && (
         <div className="flex justify-center items-center gap-4 mt-8">
           <button
-          onClick={keHalamanSebelumnya}
-          disabled={halamanAktif === 1}
-          className="px-4 py-2 border rounded-lg bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
+            onClick={keHalamanSebelumnya}
+            disabled={halamanAktif === 1}
+            className="px-4 py-2 border rounded-lg bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
           >
             Sebelumnya
           </button>
 
-        <span className="text-gray-700 font-medium">
-          Halaman {halamanAktif} dari {totalHalaman}
-        </span>
+          <span className="text-gray-700 font-medium">
+            Halaman {halamanAktif} dari {totalHalaman}
+          </span>
 
-        <button
-          onClick={keHalamanBerikutnya}
-          disabled={halamanAktif === totalHalaman}
-          className="px-4 py-2 border rounded-lg bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
-        >
-          Selanjutnya
-        </button>
+          <button
+            onClick={keHalamanBerikutnya}
+            disabled={halamanAktif === totalHalaman}
+            className="px-4 py-2 border rounded-lg bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
+          >
+            Selanjutnya
+          </button>
         </div>
       )}
     </div>

@@ -4,7 +4,7 @@ import Footer from "./Footer";
 
 function Layout() {
     return (
-        <div style={{ backgroundColor: "#fbe4ec" }} className="min-h-screen">
+        <div style={{ backgroundColor: "#e7e5e4" }} className="min-h-screen">
             <Header />
             <main style={{ minHeight: '70vh' }}>
                 <Outlet />
