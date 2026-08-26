@@ -3,7 +3,7 @@ import { useAuth } from "../context/AuthContext";
 
 function Header() {
   return (
-    <header className="bg-green-200 p-4 shadow-md">
+    <header className="bg-green-100 p-4 shadow-md">
       <div className="flex flex-wrap items-center justify-between gap-2">
         
         {/* Logo / Judul */}
